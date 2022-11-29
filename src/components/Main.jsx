@@ -25,6 +25,7 @@ const Main = () => {
     
     ¿Necesitas ayuda?
      </div>
+     <div className='header__text'>Aprende cómo mantenerte seguro, superar una crisis y encontrar tratamiento.</div>
 </header>
   )
 }
