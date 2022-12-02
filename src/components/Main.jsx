@@ -2,7 +2,12 @@ import React from 'react'
 import './style.scss'
 import logo from '../img/logo.png'
 import fondo from '../img/fondo.png'
+import { useNavigate } from 'react-router'
 const Main = () => {
+  const navigate = useNavigate()
+  const handleNavigate = (direction) => {
+    navigate(`/${direction}`)
+  }
   return (
 <header>
     
@@ -16,6 +21,7 @@ const Main = () => {
     <p>HELP</p>
     <p>INFORMATION</p>
     <p>EXERCISES</p>
+    <p onClick={()=>{handleNavigate('login')}}>Login</p>
 </div>
     </nav>
     <img src={fondo} className='imgFondo'/>
