@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../components/firebase/firebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
 import { userTypes } from "../types/userTypes";
 
 export const userRegisterAsync = ({ email, password, name }) => {
@@ -39,9 +39,37 @@ export const loginAsync = (email, password) => {
   }
 }
 
+export const loginProviderAsync = (provider) => {
+  return (dispatch) => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const { displayName, accessToken, photoURL, phoneNumber } = user.auth.currentUser
+        dispatch(loginSync({
+          email: user.email, 
+          name: displayName,
+          accessToken,
+          avatar: photoURL,
+          phoneNumber,
+          error: false
+        }))
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+        dispatch(loginSync({
+          error: true,
+          errorMessage
+        }))
+      })
+  }
+}
+
 const loginSync = (user) => {
   return {
     type: userTypes.LOGIN_USER,
-    payload: user
+    payload: { ...user }
   }
 }

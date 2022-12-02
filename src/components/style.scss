@@ -24,6 +24,9 @@
  &__links{
     display: flex;
     gap: 50px;
+    p{
+        cursor: pointer;
+    }
  }
  &__iconos{
     display: flex;

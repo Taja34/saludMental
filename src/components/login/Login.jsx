@@ -4,14 +4,16 @@ import facebookLogo from '../../assets/images/facebookLogo.png'
 import logoImage from '../../assets/images/logoImage.png'
 import './login.scss'
 import { useDispatch, useSelector } from 'react-redux'
+import { loginProvider } from "../../services/data";
 import { useForm } from 'react-hook-form'
-import { loginAsync } from '../../redux/actions/userAction'
+import { loginAsync, loginProviderAsync } from '../../redux/actions/userAction'
 import { useNavigate } from 'react-router'
 import Swal from 'sweetalert2'
 
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user = useSelector((store) => store.user);
     const { error, displayName } = useSelector(state => state.user)
 
     useEffect(() => {
@@ -39,6 +41,10 @@ const Login = () => {
          dispatch(loginAsync(data.email, data.password));
        }
 
+       const handleLoginGoogleOrFacebook = (provider) => {
+        dispatch(loginProviderAsync(provider))
+      }
+
     const buttonNavigate = (direction) => {
         navigate(`/${direction}`)
     }
@@ -58,8 +64,13 @@ const Login = () => {
                         <h1>Inicia Sesión</h1>
                         <p>Inicia sesión con</p>
                         <div className='mainLogin__providers'>
-                            <img src={googleLogo} alt="Google logo" />
-                            <img src={facebookLogo} alt="Facebook logo" />
+                            {/* <img src={googleLogo} alt="Google logo" />
+                            <img src={facebookLogo} alt="Facebook logo" /> */}
+                            {
+                                loginProvider.map((provider, index) => (
+                                    <img key={index} src={provider.image} alt={provider.name} onClick={()=>{handleLoginGoogleOrFacebook(provider.provider)}}/>
+                                ))
+                            }
                         </div>
                         <div className='mainLogin__linesBox'>
                             <hr/>
