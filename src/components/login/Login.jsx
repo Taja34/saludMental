@@ -1,15 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import googleLogo from '../../assets/images/googleLogo.png'
 import facebookLogo from '../../assets/images/facebookLogo.png'
 import logoImage from '../../assets/images/logoImage.png'
 import './login.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { loginAsync } from '../../redux/actions/userAction'
 import { useNavigate } from 'react-router'
+import Swal from 'sweetalert2'
 
 const Login = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { error, displayName } = useSelector(state => state.user)
+
+    useEffect(() => {
+        if (error) {
+            Swal.fire(
+                'Ups',
+                'Usuario o contraseña incorrecta',
+                'error'
+              )          }
+     }, [error])
+     
+     useEffect(() => {
+       if (displayName) {
+         navigate('home')
+       }
+   }, [displayName])
+     
+     const {
+       register,
+       handleSubmit,
+     } = useForm();
+   
+     const submit = (data) => {
+         console.log(data);
+         dispatch(loginAsync(data.email, data.password));
+       }
+
     const buttonNavigate = (direction) => {
         navigate(`/${direction}`)
     }
+
   return (
     <div className='body'>
         <div className='mainLogin'>
@@ -35,10 +68,14 @@ const Login = () => {
                         </div>
                     </div>
                     <div className='mainLogin__leftContentForm'>
-                        <form>
+                        <form onSubmit={handleSubmit(submit)}>
                             <div className='mainLogin__formInputs'>
-                                <input type="text" placeholder='Email'/>
-                                <input type="password" placeholder='Contraseña'/>
+                                <input type="text" placeholder='Email'
+                                {...register("email", { required: true })}
+                                />
+                                <input type="password" placeholder='Contraseña'
+                                {...register("password", { required: true })}
+                                />
                             </div>
                             <button>Login</button>
                         </form>
