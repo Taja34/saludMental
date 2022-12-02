@@ -19,7 +19,7 @@ const Main = () => {
 </div>
     </nav>
     <img src={fondo} className='imgFondo'/>
-    <div className='header__frase'>NO ESTAS SOLO</div>
+    <div className='header__frase'>NO ESTÁS SOLO</div>
     <div className='header__circulo'>
     <div className='header__circulo__sombra'></div>
     
