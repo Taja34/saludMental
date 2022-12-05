@@ -15,7 +15,7 @@ const Register = () => {
         navigate(`/${direction}`)
     }
 
-    const { error } = useSelector((state) => state.user);
+    // const { error } = useSelector((state) => state.user);
 
     const {
         register,
@@ -31,18 +31,18 @@ const Register = () => {
                 password: data.password1,
             };
             dispatch(userRegisterAsync(newUser));
-            if (error) {
-                Swal.fire(
-                    'Ups',
-                    'Hubo un error. Intenta nuevamente',
-                    'error'
-                  ) 
-                } else {
-                Swal.fire(
-                    '',
-                    'Usuario creado con éxito',
-                    'success'
-                  )            }
+            // if (error) {
+            //     Swal.fire(
+            //         'Ups',
+            //         'Hubo un error. Intenta nuevamente',
+            //         'error'
+            //       ) 
+            //     } else {
+            //     Swal.fire(
+            //         '',
+            //         'Usuario creado con éxito',
+            //         'success'
+            //       )            }
             console.log(data);
         }
     };

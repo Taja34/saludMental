@@ -3,11 +3,17 @@ import './style.scss'
 import logo from '../img/logo.png'
 import fondo from '../img/fondo.png'
 import { useNavigate } from 'react-router'
+import { actionLogoutAsync } from '../redux/actions/userAction'
+import { useDispatch } from 'react-redux'
 const Main = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const handleNavigate = (direction) => {
     navigate(`/${direction}`)
   }
+  const logOut = () => {
+    dispatch(actionLogoutAsync());
+  };
   return (
 <header>
     
@@ -22,6 +28,7 @@ const Main = () => {
     <p>INFORMATION</p>
     <p>EXERCISES</p>
     <p onClick={()=>{handleNavigate('login')}}>Login</p>
+    <button onClick={logOut}>Logout</button>
 </div>
     </nav>
     <img src={fondo} className='imgFondo'/>

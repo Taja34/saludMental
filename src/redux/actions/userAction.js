@@ -1,39 +1,55 @@
-import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import { userTypes } from "../types/userTypes";
 
 export const userRegisterAsync = ({ email, password, name }) => {
   return (dispatch) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async () => {
+      .then(async ({ user }) => {
+        const { accessToken } = user.auth.currentUser
         await updateProfile(auth.currentUser, { displayName: name });
-        dispatch(userRegisterSync({ name, email, error: false }));
+        dispatch(userRegisterSync({
+          name, 
+          email, 
+          accessToken,
+          error: false 
+        }));
       })
       .catch((error) => {
+        const errorMessage = error.message
         console.log(error);
-        dispatch(userRegisterSync({ error: true, email, name }));
+        dispatch(userRegisterSync({ error: true, errorMessage }));
       });
   };
 };
 
-const userRegisterSync = ({ name, email, error }) => {
+const userRegisterSync = (user) => {
   return {
     type: userTypes.CREATE_USER,
-    payload: { name, email, error },
+    payload: { ...user },
   };
 };
 
-export const loginAsync = (email, password) => {
+export const loginAsync = ({ email, password }) => {
   return (dispatch) => {
     signInWithEmailAndPassword(auth, email, password)
-    .then((response) => {
-      console.log(response);
-      const user = response.user;
-      dispatch(loginSync({...user, error:false}))
+    .then(({ user }) => {
+      const { displayName, accessToken } = user.auth.currentUser
+      dispatch(loginSync({
+        email,
+        name: displayName,
+        accessToken,
+        error: false
+      }))
     })
     .catch((error) => {
       console.log(error)
-      dispatch(loginSync({error: true}))
+      const errorMessage = error.message
+      dispatch(loginSync({
+        email,
+        error: true,
+        errorMessage
+      }))
     })
 
   }
@@ -44,13 +60,11 @@ export const loginProviderAsync = (provider) => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        const { displayName, accessToken, photoURL, phoneNumber } = user.auth.currentUser
+        const { displayName, accessToken } = user.auth.currentUser
         dispatch(loginSync({
           email: user.email, 
           name: displayName,
           accessToken,
-          avatar: photoURL,
-          phoneNumber,
           error: false
         }))
       })
@@ -67,9 +81,27 @@ export const loginProviderAsync = (provider) => {
   }
 }
 
-const loginSync = (user) => {
+export const loginSync = (user) => {
   return {
     type: userTypes.LOGIN_USER,
     payload: { ...user }
   }
+}
+
+export const actionLogoutAsync = () => {
+  return (dispatch) => {
+    signOut(auth)
+      .then(() => {
+        dispatch(actionLogoutSync())
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+}
+const actionLogoutSync = () => {
+  return {
+    type: userTypes.USER_LOGOUT
+  }
+
 }
