@@ -27,6 +27,16 @@
     p{
         cursor: pointer;
     }
+    button{
+        background-color: #FFFFFF;
+        color: #AAAAAA;
+        width: 90px;
+        height: 40px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+
+    }
  }
  &__iconos{
     display: flex;

@@ -13,23 +13,23 @@ import Swal from 'sweetalert2'
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = useSelector((store) => store.user);
-    const { error, displayName } = useSelector(state => state.user)
+    const user = useSelector((store) => store.userStore);
+    // const { error, displayName } = useSelector(state => state.user)
 
-    useEffect(() => {
-        if (error) {
-            Swal.fire(
-                'Ups',
-                'Usuario o contraseña incorrecta',
-                'error'
-              )          }
-     }, [error])
+    // useEffect(() => {
+    //     if (error) {
+    //         Swal.fire(
+    //             'Ups',
+    //             'Usuario o contraseña incorrecta',
+    //             'error'
+    //           )          }
+    //  }, [error])
      
-     useEffect(() => {
-       if (displayName) {
-         navigate('home')
-       }
-   }, [displayName])
+//      useEffect(() => {
+//        if (displayName) {
+//          navigate('home')
+//        }
+//    }, [displayName])
      
      const {
        register,
@@ -38,7 +38,7 @@ const Login = () => {
    
      const submit = (data) => {
          console.log(data);
-         dispatch(loginAsync(data.email, data.password));
+         dispatch(loginAsync(data));
        }
 
        const handleLoginGoogleOrFacebook = (provider) => {

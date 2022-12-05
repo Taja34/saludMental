@@ -1,8 +1,10 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { formReducer } from "../reducers/formReducer";
 import { userReducers } from "../reducers/userReducers";
 
 const reducer = {
-  user: userReducers,
+  userStore: userReducers,
+  formStore: formReducer
 };
 
 const store = configureStore({
