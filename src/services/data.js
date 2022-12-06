@@ -34,7 +34,7 @@ export const questionnaire = [
     }
   },
   {
-    question: "¿Actualmente estas pasando por una de estas dificultades?, selectiona.",
+    question: "¿Actualmente estas pasando por una de estas dificultades?",
     options: {
       option1: "Familiar (Conflictos, maltrato, abuso)",
       option2: "Pareja (Ruptura, conflictos, duelo)",
